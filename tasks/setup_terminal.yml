@@ -1,0 +1,90 @@
+- name: Install ZSH
+  become: true
+  package:
+    name: zsh
+    state: present
+
+- name: Install Fonts
+  block:
+    - name: Copy Fonts
+      copy:
+        src: "{{item}}"
+        dest: ~/.local/share/fonts/
+      with_fileglob:
+        - "./fonts/*"
+    - name: Publish Fonts
+      command: fc-cache -f -v
+
+- name: Setup OhMyZsh
+#  include_role:
+#    name: gantsign.oh-my-zsh
+#  vars:
+#    users:
+#      - username: "{{ansible_user_id}}"
+#        oh_my_zsh:
+#          theme: "powerlevel10k/powerlevel10k"
+#          update_mode: reminder
+#          oh_my_zsh_update_frequency: 7
+#          plugins:
+#            - git
+#            - jump
+#            - zsh-syntax-highlighting
+#            - zsh-autosuggestions
+  command:
+    cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --keep-zshrc --unattended"
+    creates: "~/.oh-my-zsh/oh-my-zsh.sh"
+- name: Install zsh-autosuggestions
+  git:
+    repo: 'https://github.com/zsh-users/zsh-autosuggestions'
+    dest: "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    accept_hostkey: yes
+- name: Install zsh powerlevel10k
+  git:
+    repo: 'https://github.com/romkatv/powerlevel10k.git'
+    dest: ~/.oh-my-zsh/custom/themes/powerlevel10k
+    accept_hostkey: true
+    
+- name: "Configure Gnome Terminal"
+  block:
+  - name: "Get default profile"
+    shell: gsettings get org.gnome.Terminal.ProfilesList default | awk -F \' '{print $2}'
+    register: gnome_terminal_profile
+  - name: "Configure gnome terminal"
+    dconf: 
+      key: "/org/gnome/terminal/legacy/profiles:/{{gnome_terminal_profile.stdout_lines}}/{{item.key}}"
+      value: "{{item.value}}"
+    with_items:
+      - { key: visible-name, value: "H4X0R" }
+      - { key: font, value: "MesloLGS NF 12" }
+      - { key: use-system-font, value: false }
+      - { key: audible-bell, value: false }
+      - { key: use-theme-colors, value: false }
+      - { key: palette, value: ['rgb(46,52,54)', 'rgb(204,0,0)', 'rgb(78,154,6)', 'rgb(196,160,0)', 'rgb(52,101,164)', 'rgb(117,80,123)', 'rgb(6,152,154)', 'rgb(211,215,207)', 'rgb(85,87,83)', 'rgb(239,41,41)', 'rgb(138,226,52)', 'rgb(252,233,79)', 'rgb(114,159,207)', 'rgb(173,127,168)', 'rgb(52,226,226)', 'rgb(238,238,236)'] }
+      - { key: use-transparent-background, value: true }
+      - { key: use-theme-transparency, value: false }
+      - { key: background-transparency-percent, value: 15 }
+      - { key: background-color, value: "rgb(23,20,33)" }
+      - { key: foreground-color, value: "rgb(208,207,204)" }
+      - { key: default-size-columns, value: 145 }
+      - { key: default-size-rows, value: 35 }
+  when: "'gnome-terminal' in ansible_facts.packages"
+
+- name: "Configure elementary terminal"
+  dconf:
+    key: "/io/elementary/terminal/settings/{{item.key}}" 
+    value: "{{item.value}}"
+  with_items:
+    - key: font
+      value: "'MesloLGS NF 10'"
+    - key: background
+      value: "'rgba(0,0,0,0.68)'"
+    - key: foreground
+      value: "'#a5a5a5'"
+    - key: theme
+      value: "'custom'"
+  when: "'io.elementary.terminal' in ansible_facts.packages"
+- name: change user shell to zsh
+  become: true
+  user:
+    name: "{{local_user}}"
+    shell: /usr/bin/zsh
