@@ -33,4 +33,6 @@ if [[ -f "./requirements.yml" ]]; then
     ansible-galaxy install -r requirements.yml
 fi
 
-ansible-playbook --diff playbook.yml --ask-become-pass
+ANSIBLE_LOCALHOST_WARNING=False \
+ANSIBLE_INVENTORY_UNPARSED_WARNING=False \
+ansible-playbook playbook.yml --ask-become-pass

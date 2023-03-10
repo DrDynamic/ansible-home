@@ -96,3 +96,7 @@
         accept_hostkey: yes
     - name: Install dotbot
       command: ~/.config/dotbot/install
+
+    - name: Setup dev environment
+      import_tasks:
+        file: ./tasks/setup_dev_environment.yml
