@@ -30,7 +30,7 @@
 #            - jump
 #            - zsh-syntax-highlighting
 #            - zsh-autosuggestions
-  command:
+  shell:
     cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --keep-zshrc --unattended"
     creates: "~/.oh-my-zsh/oh-my-zsh.sh"
 - name: Install zsh-autosuggestions

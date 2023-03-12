@@ -16,7 +16,7 @@
 
 - name: Unpack bin
   unarchive:
-    src: ./projects/bin.tar.gt
+    src: ./projects/bin.tar.gz
     dest: ~/Projects/vendor/bin
     creates: ~/Projects/vendor/bin/update_env
 

@@ -14,11 +14,11 @@
       - bitwarden
       - spotify
       - flatseal
-      - evolution
+        #      - evolution
       - postman
       - phpstorm
       - cheese
-      - krita
+        #- krita
     snaps:
       - bpytop
       - chromium
@@ -59,6 +59,7 @@
       with_items: "{{flatpaks}}"
 
     - name: Install Snaps
+      become: true
       snap:
         name: "{{item}}"
         state: present
@@ -79,6 +80,7 @@
         dest: ~/bin/pcloud
 
     - name: Install Snaps in Classic Mode
+      become: true
       snap:
         name: "{{item}}"
         state: present
@@ -89,6 +91,10 @@
       import_tasks:
         file: ./tasks/setup_terminal.yml
 
+    - name: remove zshrc
+      file: 
+        path: ~/.zshrc
+        state: "absent"
     - name: Pull Dotbot
       git:
         repo: "{{dotbot}}"
