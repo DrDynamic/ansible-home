@@ -14,11 +14,11 @@
       - bitwarden
       - spotify
       - flatseal
-        #      - evolution
+      - org.gnome.Evolution
       - postman
       - phpstorm
       - cheese
-        #- krita
+      - org.kde.krita
     snaps:
       - bpytop
       - chromium
