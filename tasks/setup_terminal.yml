@@ -51,11 +51,11 @@
     register: gnome_terminal_profile
   - name: "Configure gnome terminal"
     dconf: 
-      key: "/org/gnome/terminal/legacy/profiles:/{{gnome_terminal_profile.stdout_lines}}/{{item.key}}"
+      key: "/org/gnome/terminal/legacy/profiles:/:{{gnome_terminal_profile.stdout}}/{{item.key}}"
       value: "{{item.value}}"
     with_items:
-      - { key: visible-name, value: "H4X0R" }
-      - { key: font, value: "MesloLGS NF 12" }
+      - { key: visible-name, value: "'H4X0R'" }
+      - { key: font, value: "'MesloLGS NF 12'" }
       - { key: use-system-font, value: false }
       - { key: audible-bell, value: false }
       - { key: use-theme-colors, value: false }
@@ -63,8 +63,8 @@
       - { key: use-transparent-background, value: true }
       - { key: use-theme-transparency, value: false }
       - { key: background-transparency-percent, value: 15 }
-      - { key: background-color, value: "rgb(23,20,33)" }
-      - { key: foreground-color, value: "rgb(208,207,204)" }
+      - { key: background-color, value: "'rgb(23,20,33)'" }
+      - { key: foreground-color, value: "'rgb(208,207,204)'" }
       - { key: default-size-columns, value: 145 }
       - { key: default-size-rows, value: 35 }
   when: "'gnome-terminal' in ansible_facts.packages"

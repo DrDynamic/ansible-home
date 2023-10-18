@@ -9,15 +9,16 @@
       - snapd
       - neovim
       - curl
+      - git
   # gnome-software-plugin-flatpak (only gnome)
     flatpaks:
-      - bitwarden
-      - spotify
-      - flatseal
+      - com.bitwarden.desktop
+      - com.spotify.Client
+      - com.github.tchx84.Flatseal
       - org.gnome.Evolution
-      - postman
-      - phpstorm
-      - cheese
+      - com.getpostman.Postman
+      - com.jetbrains.PhpStorm
+      - org.gnome.Cheese
       - org.kde.krita
     snaps:
       - bpytop
