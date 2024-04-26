@@ -3,46 +3,9 @@
     path: "{{item}}"
     state: directory
   with_items:
-    - ~/Projects/kzv/apps
-    - ~/Projects/kzv/services
-    - ~/Projects/vendor/bin
-    - ~/Projects/vendor/config
-
-- name: Unpack config
-  unarchive:
-    src: ./projects/config.tar.gz
-    dest: ~/Projects/vendor/config
-    creates: ~/Projects/vendor/config/kzv
-
-- name: Unpack bin
-  unarchive:
-    src: ./projects/bin.tar.gz
-    dest: ~/Projects/vendor/bin
-    creates: ~/Projects/vendor/bin/update_env
-
-- name: Make bin executable
-  file:
-    path: "{{ item }}"
-    owner: "{{ local_user }}"
-    mode: "700"
-  with_fileglob:
-    - "~/Projects/vendor/bin/*"
-
-- name: Check if laradock_latest exists
-  stat:
-    path: ~/Projects/vendor/laradock_latest
-  register: laradock_latest
-
-- name: Install laradock
-  git:
-    repo: git@github.com:laradock/laradock.git
-    dest: ~/Projects/vendor/laradock_latest
-    accept_hostkey: true
-  when: not laradock_latest.stat.exists
-
-- name: Configure laradock
-  shell: "~/Projects/vendor/bin/update_env all"
-
+    - ~/Projects/kzv/
+    - ~/Projects/experiments
+    - ~/Projects/own/
 - name: Install docker dependencies
   become: true
   package:
