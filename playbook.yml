@@ -19,9 +19,9 @@
       - com.jetbrains.PhpStorm
       - org.gnome.Cheese
       - org.kde.krita
+      - org.chromium.Chromium
     snaps:
       - bpytop
-      - chromium
       - whatsdesk
     snaps_classic:
       - code
