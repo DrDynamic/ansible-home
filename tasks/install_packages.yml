@@ -1,0 +1,37 @@
+- name: Update and upgrade all packages to the latest version
+  apt:
+    update_cache: true
+    upgrade: dist
+    cache_valid_time: 3600
+- name: Install Packages
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items: "{{system_packages}}"
+  become: true
+- name: Add the flathub flatpak repository remote to the user installation
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+- name: Install Flatpaks
+  flatpak:
+    method: user
+    name: "{{item}}"
+    state: present
+  with_items: "{{flatpaks}}"
+- name: Install Snaps
+  become: true
+  snap:
+    name: "{{item}}"
+    state: present
+    classic: no
+  with_items: "{{snaps}}"
+- name: Install Snaps in Classic Mode
+  become: true
+  snap:
+    name: "{{item}}"
+    state: present
+    classic: yes
+  with_items: "{{snaps_classic}}"

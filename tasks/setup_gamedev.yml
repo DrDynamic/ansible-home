@@ -1,0 +1,14 @@
+- name: Create Directories
+  file:
+    path: "{{item}}"
+    state: directory
+  loop:
+    - ~/Projects/vendor
+    - ~/Projects/godot
+- name: Install Flatpaks
+  flatpak:
+    method: user
+    name: "{{item}}"
+    state: present
+  loop: 
+    - org.godotengine.Godot

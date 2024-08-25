@@ -1,0 +1,108 @@
+- name: Setup Device
+  hosts: localhost
+  vars:
+    local_user: "{{ ansible_user_id }}"
+    dotbot: git@github.com:DrDynamic/dotbot-home.git
+    system_packages:
+      - zsh
+      - flatpak
+      - snapd
+      - neovim
+      - curl
+      - git
+  # gnome-software-plugin-flatpak (only gnome)
+    flatpaks:
+      - com.bitwarden.desktop
+      - com.github.tchx84.Flatseal
+      - org.gnome.Evolution
+      - com.getpostman.Postman
+      - com.jetbrains.PhpStorm
+      - org.gnome.Cheese
+      - org.kde.krita
+      - org.chromium.Chromium
+    snaps:
+      - bpytop
+      - whatsdesk
+    snaps_classic:
+      - code
+  tasks:
+    - name: "Get list of installed Packages"
+      package_facts:
+        manager: "auto"
+
+    - name: Create Directories
+      file:
+        path: "{{item}}"
+        state: directory
+      loop:
+        - ~/bin
+        - ~/tmp
+
+    - name: Install Packages
+      package:
+        name: "{{item}}"
+        state: present
+      with_items: "{{system_packages}}"
+      become: true
+
+    - name: Add the flathub flatpak repository remote to the user installation
+      flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+        method: user
+    - name: Install Flatpaks
+      flatpak:
+        method: user
+        name: "{{item}}"
+        state: present
+      with_items: "{{flatpaks}}"
+
+    - name: Install Snaps
+      become: true
+      snap:
+        name: "{{item}}"
+        state: present
+        classic: no
+      with_items: "{{snaps}}"
+    - name: Configure bpytop
+      become: true
+      shell: "snap connect bpytop:{{item}}"
+      with_items:
+        - mount-observe
+        - hardware-observe
+        - system-observe
+        - process-control
+        - physical-memory-observe
+    - name: download pcloud
+      get_url:
+        url: https://www.pcloud.com/how-to-install-pcloud-drive-linux.html?download=electron-64
+        dest: ~/bin/pcloud
+
+    - name: Install Snaps in Classic Mode
+      become: true
+      snap:
+        name: "{{item}}"
+        state: present
+        classic: yes
+      with_items: "{{snaps_classic}}"
+
+    - name: Setup Terminal
+      import_tasks:
+        file: ./tasks/setup_terminal.yml
+
+    - name: remove zshrc
+      file: 
+        path: ~/.zshrc
+        state: "absent"
+    - name: Pull Dotbot
+      git:
+        repo: "{{dotbot}}"
+        dest: ~/.config/dotbot
+        accept_hostkey: yes
+    - name: Install dotbot
+      command: ~/.config/dotbot/install
+
+    - name: Setup dev environment
+      import_tasks:
+        file: ./tasks/setup_dev_environment.yml
