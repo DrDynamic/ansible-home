@@ -1,7 +1,9 @@
 - name: Pull Dotbot
   git:
     repo: "{{repo}}"
+    version: "master"
     dest: ~/.config/dotbot
     accept_hostkey: yes
+  become: no
 - name: Install dotbot
   command: ~/.config/dotbot/install

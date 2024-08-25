@@ -11,6 +11,7 @@
     - import_tasks: ./tasks/setup_dotbot.yml
       vars:
         repo: git@github.com:DrDynamic/dotbot-home.git
+#        repo: https://github.com/DrDynamic/dotbot-home.git
     - import_tasks: ./tasks/setup_zsh.yml
       vars:
         local_user: "{{ansible_user_id}}"

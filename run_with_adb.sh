@@ -23,8 +23,11 @@ if ! [[ -f "$HOME/.ssh/id_rsa" ]]; then
     ssh-keygen -b 4096 -t rsa -f "$HOME/.ssh/id_rsa" -N "" -C "$USER@$HOSTNAME"
     echo "Publishing Key to authorized keys"
     cat "$HOME/.ssh/id_rsa.pub" >> "$HOME/.ssh/authorized_keys"
-    chmod 600 "~/.ssh/authorized_keys"
     echo "done"
+
+    echo "Add ssh key to github:\n"$(cat $HOME/.ssh/id_rsa.pub)
+
+    exit
 else
     echo "SSH already generated"
 fi
