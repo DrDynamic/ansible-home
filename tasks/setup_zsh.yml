@@ -34,3 +34,7 @@
     name: "{{local_user}}"
     shell: /usr/bin/zsh
   become: true
+- name: Set default editor
+  command: update-alternatives --set editor /usr/bin/nvim
+- name: Set default terminal emulator
+  command: update-alternatives --set x-terminal-emulator /usr/bin/kitty
