@@ -8,8 +8,6 @@
 - name: Get filename prefix with latest version
   set_fact:
     filename_prefix: "{{ lookup('url', 'https://golang.org/VERSION?m=text', wantlist=True)[0] }}"
-- debug:
-    var: filename_prefix
 - name: Download and extract the archive {{ filename_prefix }}.linux-amd64.tar.gz
   unarchive:
     src: "https://dl.google.com/go/{{ filename_prefix }}.linux-amd64.tar.gz"
