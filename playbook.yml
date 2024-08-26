@@ -17,6 +17,7 @@
         system_packages:
           - kitty 
           - zsh
+          - autojump
           - flatpak
           - snapd
           - neovim
