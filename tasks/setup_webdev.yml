@@ -72,7 +72,7 @@
 
 - name: Pull laradock
   git:
-    repo: {{laradock}}
+    repo: "{{laradock}}"
     dest: ~/Projects/vendor/laradock
     accept_hostkey: yes
   become: no
