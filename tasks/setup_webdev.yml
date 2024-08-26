@@ -69,3 +69,26 @@
     - docker.service
     - containerd.service
   become: true
+
+- name: Pull laradock
+  git:
+    repo: {{laradock}}
+    dest: ~/Projects/vendor/laradock
+    accept_hostkey: yes
+  become: no
+
+- name: Create laradock .env
+  copy:
+    src: ~/Projects/vendor/laradock/.env.example
+    dest: ~/Projects/vendor/laradock/.env
+- name: Patch laradock .env
+  lineinfile:
+    path: ~/Projects/vendor/laradock/.env
+    regexp: "^{{item.name}}="
+    line: "{{item.name}}={{item.value}}"
+  with_items:
+    - {name: "APP_CODE_PATH_HOST", value: "~/Projects/web-dev"}
+    - {name: "DATA_PATH_HOST", value: "~/Projects/vendor/.laradock/data"}
+    - {name: "SHELL_OH_MY_ZSH", value: "true"}
+    - {name: "SHELL_OH_MY_ZSH_AUTOSUGESTIONS", value: "true"}
+    - {name: "SHELL_OH_MY_ZSH_ALIASES", value: "true"}

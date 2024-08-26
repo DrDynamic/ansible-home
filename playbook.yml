@@ -42,6 +42,6 @@
     - import_tasks: ./tasks/setup_webdev.yml
       vars:
         local_user: "{{ansible_user_id}}"
+        laradock: "https://github.com/Laradock/laradock.git"
     - import_tasks: ./tasks/setup_gamedev.yml
     - import_tasks: ./tasks/setup_godev.yml
-#    - import_tasks: ./tasks/setup_kzv.yml
