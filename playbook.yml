@@ -34,7 +34,11 @@
         snaps_classic:
           - code
           - phpstorm
-          - ghostty
+    - name: Install Ghostty
+      shell:
+        cmd: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh)"
+        creates: /bin/ghostty
+      become: true
     - import_tasks: ./tasks/setup_zsh.yml
       vars:
         local_user: "{{ansible_user_id}}"
