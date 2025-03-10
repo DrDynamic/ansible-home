@@ -37,6 +37,9 @@
 - name: Set default editor
   command: update-alternatives --set editor /usr/bin/nvim
   become: true
+- name: Install Ghostty x-terminal-emulator
+  command: sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /snap/bin/ghostty 10
+  become: true
 - name: Set default terminal emulator
-  command: update-alternatives --set x-terminal-emulator /usr/bin/kitty
+  command: update-alternatives --set x-terminal-emulator /snap/bin/ghostty
   become: true

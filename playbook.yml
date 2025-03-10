@@ -15,7 +15,6 @@
     - import_tasks: ./tasks/install_packages.yml
       vars:
         system_packages:
-          - kitty 
           - zsh
           - autojump
           - flatpak
@@ -28,7 +27,6 @@
         flatpaks:
           - com.bitwarden.desktop
           - com.github.tchx84.Flatseal
-          - com.jetbrains.PhpStorm
           - org.kde.krita
           - org.chromium.Chromium
           - com.ktechpit.whatsie
@@ -36,6 +34,7 @@
         snaps_classic:
           - code
           - phpstorm
+          - ghostty
     - import_tasks: ./tasks/setup_zsh.yml
       vars:
         local_user: "{{ansible_user_id}}"
