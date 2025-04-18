@@ -40,3 +40,5 @@
 - name: Set default terminal emulator
   command: update-alternatives --set x-terminal-emulator /usr/bin/ghostty
   become: true
+- name: Set default terminal in gnome
+  command: gsettings set org.gnome.desktop.default-applications.terminal exec '/usr/bin/ghostty'
